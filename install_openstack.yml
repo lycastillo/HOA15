@@ -1,0 +1,36 @@
+#This is the playbook for installing OpenStack prerequisites
+
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Install Apache (Ubuntu)
+    apt:
+      name:
+        - apache2
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install MySQL (Ubuntu)
+    apt:
+      name:
+        - mysql-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: neutron
+  become: true
+  roles:
+    - role: neutron
+
+- hosts: horizon
+  become: true
+  roles:
+    - role: horizon
+
+- hosts: cinder
+  become: true
+  roles:
+    - role: cinder
